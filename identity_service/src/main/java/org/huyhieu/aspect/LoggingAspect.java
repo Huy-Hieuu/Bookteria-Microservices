@@ -12,7 +12,13 @@ import org.springframework.stereotype.Component;
 public class LoggingAspect {
     @Before("execution(* org.huyhieu.controller.*.*(..))")
     public void logMethodCall(JoinPoint joinPoint) {
+        // Get the method name
         String methodName = joinPoint.getSignature().getName();
-        log.info("Call API: " + methodName);
+
+        // Get the class name
+        String className = joinPoint.getTarget().getClass().getSimpleName();
+
+        // Log the class name and method name
+        log.info("Call API: " + className + "." + methodName);
     }
 }

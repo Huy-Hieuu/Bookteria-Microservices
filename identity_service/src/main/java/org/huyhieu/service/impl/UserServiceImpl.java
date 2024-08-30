@@ -1,6 +1,8 @@
 package org.huyhieu.service.impl;
 
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.huyhieu.dto.data.UserDto;
 import org.huyhieu.dto.request.UserCreateRequest;
 import org.huyhieu.dto.request.UserUpdateRequest;
@@ -10,6 +12,8 @@ import org.huyhieu.map.UserMapper;
 import org.huyhieu.repository.UserRepository;
 import org.huyhieu.service.UserService;
 import org.huyhieu.utils.enums.APIStatus;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,9 +27,10 @@ import java.util.List;
 @Service
 @Transactional(propagation = Propagation.REQUIRED)
 @RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class UserServiceImpl implements UserService {
 
-    private final UserRepository userRepository;
+    UserRepository userRepository;
 
     @Override
     public List<UserDto> getAllUsers() {
@@ -46,6 +51,10 @@ public class UserServiceImpl implements UserService {
         if (userRepository.existsByUsername(user.getUsername())) {
             throw new UserAPIException(APIStatus.USERNAME_EXISTED);
         }
+
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
+
         return UserMapper.INSTANCE.toUserDto(userRepository.saveUser(user));
     }
 

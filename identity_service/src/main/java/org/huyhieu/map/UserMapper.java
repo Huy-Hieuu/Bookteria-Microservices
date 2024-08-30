@@ -1,13 +1,13 @@
 package org.huyhieu.map;
 
-import java.util.List;
-
 import org.huyhieu.dto.data.UserDto;
 import org.huyhieu.dto.request.UserCreateRequest;
 import org.huyhieu.dto.request.UserUpdateRequest;
 import org.huyhieu.entity.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
+
+import java.util.List;
 
 /**
  *
