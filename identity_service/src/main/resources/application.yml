@@ -17,6 +17,8 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
 
+jwt:
+  signer-key: "bwK6dJn4tdSpuG?XRR4iTrDNMwFaQScXy5zxJsfAy/d2aq-f7UpKHTe?PPha9v0O"
 #logging:
 #  level:
 #    org.springframework: DEBUG

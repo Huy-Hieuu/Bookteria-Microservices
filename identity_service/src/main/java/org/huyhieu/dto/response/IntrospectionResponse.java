@@ -10,8 +10,7 @@ import lombok.experimental.FieldDefaults;
 @Getter
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class AuthenticationResponse {
+public class IntrospectionResponse {
     @Builder.Default
-    boolean isAuthenticated = false;
-    String token;
+    boolean isTokenValid = false;
 }

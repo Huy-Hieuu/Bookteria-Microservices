@@ -22,8 +22,10 @@ public class GlobalExceptionHandler {
     ResponseEntity<ApiResponse<Object>> handleRuntimeException(RuntimeException exception) {
         ApiResponse<Object> apiResponse = ApiResponse.builder()
                                              .code(1009)
-                                             .message(exception.getMessage())
+                                             .message("Run Time Exception " + exception.getMessage())
                                              .build();
+
+        log.error("Run Time Exception occurred: ", exception);
 
         return ResponseEntity.badRequest().body(apiResponse);
     }

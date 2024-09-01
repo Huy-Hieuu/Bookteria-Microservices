@@ -19,7 +19,7 @@ import java.util.List;
  */
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api")
+@RequestMapping("/api")
 @Slf4j
 public class UserController {
     private final UserService userService;
@@ -34,7 +34,7 @@ public class UserController {
                 .build();
     }
 
-    @GetMapping("/getAllUsers")
+    @GetMapping("/users")
     public List<UserDto> getUsers() {
         return userService.getAllUsers();
     }

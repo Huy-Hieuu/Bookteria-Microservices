@@ -20,6 +20,7 @@ public enum APIStatus {
     USERNAME_INVALID(1006, "Username must be at least 3 characters"),
     PASSWORD_INVALID(1007, "Invalid Password"),
     USER_NOT_EXISTED(1007, "User not existed"),
+    UNAUTHENTICATED(1008, "Unauthenticated"),
     UNEXPECTED_ERROR(9999, "Unexpected error")
     ;
 
