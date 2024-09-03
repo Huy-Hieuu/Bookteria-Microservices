@@ -1,4 +1,4 @@
-package org.huyhieu.utils.enums;
+package org.huyhieu.enums;
 
 
 import lombok.AccessLevel;

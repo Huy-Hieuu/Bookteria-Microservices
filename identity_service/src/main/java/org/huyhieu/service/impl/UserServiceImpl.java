@@ -3,6 +3,7 @@ package org.huyhieu.service.impl;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
 import org.huyhieu.dto.data.UserDto;
 import org.huyhieu.dto.request.UserCreateRequest;
 import org.huyhieu.dto.request.UserUpdateRequest;
@@ -15,6 +16,8 @@ import org.huyhieu.map.UserMapper;
 import org.huyhieu.repository.RoleRepository;
 import org.huyhieu.repository.UserRepository;
 import org.huyhieu.service.UserService;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -31,6 +34,7 @@ import java.util.Optional;
 @Transactional(propagation = Propagation.REQUIRED)
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@Slf4j
 public class UserServiceImpl implements UserService {
 
     UserRepository userRepository;
@@ -39,6 +43,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserDto> getAllUsers() {
+        // The authentication holds details of who is authenticated
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        log.info("Username {}", authentication.getName());
+        log.info("Roles {}", authentication.getAuthorities());
+
         List<User> users = userRepository.findAll();
 
         return UserMapper.INSTANCE.toUserDtos(users);

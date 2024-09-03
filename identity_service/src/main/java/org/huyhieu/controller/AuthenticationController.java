@@ -10,7 +10,7 @@ import org.huyhieu.dto.response.ApiResponse;
 import org.huyhieu.dto.response.AuthenticationResponse;
 import org.huyhieu.dto.response.IntrospectionResponse;
 import org.huyhieu.service.AuthenticationService;
-import org.huyhieu.utils.enums.APIStatus;
+import org.huyhieu.enums.APIStatus;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;

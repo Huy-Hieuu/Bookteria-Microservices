@@ -5,9 +5,12 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.jose.jws.MacAlgorithm;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
@@ -28,8 +31,9 @@ public class SecurityConfig {
      * endpoints will be public: auth/token, auth/introspect
      * */
     private static final List<Pair<String, String>> PUBLIC_END_POINTS
-            = Lists.newArrayList(Pair.of("/auth/token", "POST"),
-                                 Pair.of("/auth/introspect", "POST"));
+            = Lists.newArrayList(Pair.of("/auth/token", HttpMethod.POST.name()),
+                                 Pair.of("/auth/introspect", HttpMethod.POST.name()),
+                                 Pair.of("/api/create/user", HttpMethod.POST.name()));
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
@@ -40,6 +44,7 @@ public class SecurityConfig {
 
         httpSecurity.authorizeHttpRequests(
                 requests -> requests.requestMatchers(requestMatchers).permitAll()
+                                    .requestMatchers(new AntPathRequestMatcher("/api/users", HttpMethod.GET.name())).hasAuthority("SCOPE_ADMIN")
                                     .anyRequest().authenticated());
 
         httpSecurity.oauth2ResourceServer(
@@ -61,5 +66,10 @@ public class SecurityConfig {
                 .withSecretKey(secretKeySpec)
                 .macAlgorithm(MacAlgorithm.HS512)
                 .build();
+    }
+
+    @Bean
+    public PasswordEncoder getPasswordEncoder() {
+        return new BCryptPasswordEncoder(10);
     }
 }
