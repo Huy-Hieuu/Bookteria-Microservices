@@ -8,16 +8,17 @@
     </parent>
 
     <artifactId>commons-service</artifactId>
+    <version>1.0.0</version>
     <packaging>pom</packaging>
-
     <name>commons-service</name>
-    <url>http://maven.apache.org</url>
+
     <modules>
         <module>commons-domain</module>
     </modules>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <spring-boot.version>2.7.2</spring-boot.version>
     </properties>
 
     <dependencies>
@@ -28,4 +29,25 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring-boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
 </project>

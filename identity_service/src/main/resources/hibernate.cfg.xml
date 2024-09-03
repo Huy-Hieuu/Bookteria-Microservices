@@ -19,5 +19,6 @@
 
         <!-- Names the annotated entity class -->
         <mapping class="org.huyhieu.entity.User"/>
+        <mapping class="org.huyhieu.entity.Role"/>
     </session-factory>
 </hibernate-configuration>
