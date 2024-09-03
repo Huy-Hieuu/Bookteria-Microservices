@@ -6,19 +6,22 @@ import lombok.experimental.FieldDefaults;
 import org.huyhieu.dto.data.UserDto;
 import org.huyhieu.dto.request.UserCreateRequest;
 import org.huyhieu.dto.request.UserUpdateRequest;
+import org.huyhieu.entity.Role;
 import org.huyhieu.entity.User;
+import org.huyhieu.enums.APIStatus;
+import org.huyhieu.enums.RoleEnum;
 import org.huyhieu.exception.custom.UserAPIException;
 import org.huyhieu.map.UserMapper;
+import org.huyhieu.repository.RoleRepository;
 import org.huyhieu.repository.UserRepository;
 import org.huyhieu.service.UserService;
-import org.huyhieu.utils.enums.APIStatus;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  *
@@ -31,15 +34,21 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     UserRepository userRepository;
+    RoleRepository roleRepository;
+    PasswordEncoder passwordEncoder;
 
     @Override
     public List<UserDto> getAllUsers() {
-        return UserMapper.INSTANCE.toUserDtos(userRepository.findAll());
+        List<User> users = userRepository.findAll();
+
+        return UserMapper.INSTANCE.toUserDtos(users);
     }
 
     @Override
-    public UserDto getUser(Long id) {
-        return userRepository.findById(id)
+    public UserDto getUser(Integer id) {
+        Optional<User> user = userRepository.findById(id);
+
+        return user
                 .map(UserMapper.INSTANCE::toUserDto)
                 .orElseThrow(() -> new UserAPIException(APIStatus.USER_NOT_FOUND));
     }
@@ -52,14 +61,23 @@ public class UserServiceImpl implements UserService {
             throw new UserAPIException(APIStatus.USERNAME_EXISTED);
         }
 
-        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
         user.setPassword(passwordEncoder.encode(request.getPassword()));
 
-        return UserMapper.INSTANCE.toUserDto(userRepository.saveUser(user));
+        // Add role
+        Role role = roleRepository.findByType(RoleEnum.USER)
+                                  .orElseGet(() -> {
+                                      Role newRole = new Role();
+                                      newRole.setType(RoleEnum.USER);
+
+                                      return newRole;
+                                  });
+        user.addRole(role);
+
+        return UserMapper.INSTANCE.toUserDto(userRepository.save(user));
     }
 
     @Override
-    public UserDto updateUser(Long id, UserUpdateRequest request) {
+    public UserDto updateUser(Integer id, UserUpdateRequest request) {
         User user = userRepository.findUserById(id);
 
         if (user == null) {
@@ -75,7 +93,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto deleteUser(Long id) {
-        return null;
+    public void deleteUser(Integer id) {
+        if (!userRepository.existsById(id)) {
+            throw new UserAPIException(APIStatus.USER_NOT_FOUND);
+        }
+        userRepository.deleteById(id);
     }
 }

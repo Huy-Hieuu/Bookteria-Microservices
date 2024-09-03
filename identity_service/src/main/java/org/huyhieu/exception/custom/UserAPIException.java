@@ -1,7 +1,7 @@
 package org.huyhieu.exception.custom;
 
 import lombok.Getter;
-import org.huyhieu.utils.enums.APIStatus;
+import org.huyhieu.enums.APIStatus;
 
 @Getter
 public class UserAPIException extends RuntimeException {

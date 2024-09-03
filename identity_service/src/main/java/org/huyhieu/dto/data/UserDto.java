@@ -1,10 +1,14 @@
 package org.huyhieu.dto.data;
 
-import java.time.LocalDate;
-
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.FieldDefaults;
+import org.huyhieu.enums.RoleEnum;
+
+import java.time.LocalDate;
+import java.util.Set;
 
 /**
  *
@@ -13,9 +17,12 @@ import lombok.Setter;
 @Builder(toBuilder = true)
 @Getter
 @Setter
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserDto {
-    private String username;
-    private String firstName;
-    private String lastName;
-    private LocalDate dob;
+    long id;
+    String username;
+    String firstName;
+    String lastName;
+    LocalDate dob;
+    Set<RoleEnum> roles;
 }

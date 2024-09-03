@@ -1,8 +1,50 @@
 package org.huyhieu.core;
 
+import lombok.Getter;
+import lombok.Setter;
+
+import javax.persistence.*;
+import javax.validation.constraints.Size;
+import java.time.LocalDateTime;
+
 /**
  *
- * @author donh
+ * @author huy-hieu
  */
-public abstract class AbstractAuditableEntity {
+@MappedSuperclass
+@Getter
+@Setter
+public abstract class AbstractAuditableEntity extends AbstractEntity {
+
+    @Size(max = 128)
+    @Column(name = "USR_LOG_I", updatable = false)
+    private String createdBy;
+
+    @Column(name = "DTE_LOG_I", updatable = false)
+    private LocalDateTime creationDate;
+
+    @Size(max = 128)
+    @Column(name = "USR_LOG_U")
+    private String lastModifiedBy;
+
+    @Column(name = "DTE_LOG_U")
+    private LocalDateTime lastModificationDate;
+
+    @Version
+    @Column(name = "VERSION")
+    private Integer version;
+
+    @PrePersist
+    public void beforeSave() {//todo: temp comment out
+//        setCreatedBy(UserUtils.getUserName());
+//        setCreationDate(DateUtils.getCurrentDateTime());
+//        setLastModifiedBy(UserUtils.getUserName());
+//        setLastModificationDate(DateUtils.getCurrentDateTime());
+    }
+
+    @PreUpdate
+    public void beforeUpdate() {
+//        setLastModifiedBy(UserUtils.getUserName());
+//        setLastModificationDate(DateUtils.getCurrentDateTime());
+    }
 }

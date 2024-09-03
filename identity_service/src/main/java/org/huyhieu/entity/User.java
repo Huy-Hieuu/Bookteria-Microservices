@@ -1,11 +1,19 @@
 package org.huyhieu.entity;
 
-import lombok.EqualsAndHashCode;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.FieldDefaults;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+import org.huyhieu.core.AbstractAuditableEntity;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  *
@@ -15,25 +23,42 @@ import java.time.LocalDate;
 @Table(name = "user", schema = "identity_service")
 @Getter
 @Setter
-@EqualsAndHashCode
-public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "USER_ID")
-    private long id;
-
+@NoArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
+@AttributeOverride(name = "id", column = @Column(name = "USER_ID"))
+public class User extends AbstractAuditableEntity {
     @Column(name = "PASSWORD")
-    private String password;
+    String password;
 
     @Column(name = "USER_NAME")
-    private String username;
+    String username;
 
     @Column(name = "FIRST_NAME")
-    private String firstName;
+    String firstName;
 
     @Column(name = "LAST_NAME")
-    private String lastName;
+    String lastName;
 
     @Column(name = "DOB")
-    private LocalDate dob;
+    LocalDate dob;
+
+    @Fetch(FetchMode.SUBSELECT)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(
+            name = "user_has_role",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    @JsonIgnoreProperties(value = {"users"})
+    Set<Role> roles = new HashSet<>();
+
+    public void addRole(Role role) {
+        this.roles.add(role);
+        role.getUsers().add(this);
+    }
+
+    public void removeRole(Role role) {
+        this.roles.remove(role);
+        role.getUsers().remove(this);
+    }
 }

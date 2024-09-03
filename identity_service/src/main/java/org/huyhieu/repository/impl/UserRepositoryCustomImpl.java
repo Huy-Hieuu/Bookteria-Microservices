@@ -24,7 +24,7 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
             if (transaction != null) {
                 transaction.rollback();
             }
-            LOG.error(e.getStackTrace());
+            LOG.error(e);
         }
         return user;
     }
@@ -70,7 +70,7 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
     }
 
     @Override
-    public User findUserById(Long userId) {
+    public User findUserById(Integer userId) {
         Transaction transaction = null;
         User user = null;
 

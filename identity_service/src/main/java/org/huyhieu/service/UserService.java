@@ -13,11 +13,11 @@ import java.util.List;
 public interface UserService {
     List<UserDto> getAllUsers();
 
-    UserDto getUser(Long id);
+    UserDto getUser(Integer id);
 
     UserDto createUser(UserCreateRequest request);
 
-    UserDto updateUser(Long id, UserUpdateRequest request);
+    UserDto updateUser(Integer id, UserUpdateRequest request);
 
-    UserDto deleteUser(Long id);
+    void deleteUser(Integer id);
 }

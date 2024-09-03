@@ -15,5 +15,5 @@ public interface UserRepositoryCustom {
     List<User> getUsers();
     User updateUser(User user);
     void deleteUser(Long userId);
-    User findUserById(Long userId);
+    User findUserById(Integer userId);
 }
