@@ -11,6 +11,8 @@ import org.huyhieu.dto.response.AuthenticationResponse;
 import org.huyhieu.dto.response.IntrospectionResponse;
 import org.huyhieu.service.AuthenticationService;
 import org.huyhieu.enums.APIStatus;
+import org.huyhieu.utils.ResponseUtils;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,26 +31,18 @@ public class AuthenticationController {
     AuthenticationService authenticationService;
 
     @PostMapping("/token")
-    ApiResponse<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequest request) {
+    ResponseEntity<ApiResponse<AuthenticationResponse>> authenticate(@RequestBody AuthenticationRequest request) {
         AuthenticationResponse response = authenticationService.authenticate(request);
 
-        return ApiResponse.<AuthenticationResponse>builder()
-                          .code(APIStatus.SUCCESS.getCode())
-                          .message(APIStatus.SUCCESS.getMessage())
-                          .result(response)
-                          .build();
+        return ResponseUtils.buildResponseEntity(response, APIStatus.SUCCESS);
     }
 
     @PostMapping("/introspect")
-    ApiResponse<IntrospectionResponse> introspect(@RequestBody IntrospectionRequest request){
+    ResponseEntity<ApiResponse<IntrospectionResponse>> introspect(@RequestBody IntrospectionRequest request){
         try {
             IntrospectionResponse response = authenticationService.introspect(request);
 
-            return ApiResponse.<IntrospectionResponse>builder()
-                              .result(response)
-                              .message(APIStatus.SUCCESS.getMessage())
-                              .code(APIStatus.SUCCESS.getCode())
-                              .build();
+            return ResponseUtils.buildResponseEntity(response, APIStatus.SUCCESS);
 
         } catch (JOSEException | ParseException e) {
             throw new IllegalArgumentException(e);

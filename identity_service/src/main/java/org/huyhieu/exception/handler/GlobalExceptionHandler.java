@@ -6,6 +6,7 @@ import org.huyhieu.exception.custom.UserAPIException;
 import org.huyhieu.utils.constants.Constants;
 import org.huyhieu.enums.APIStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -35,6 +36,16 @@ public class GlobalExceptionHandler {
         ApiResponse<Object> apiResponse = ApiResponse.builder()
                                                      .code(exception.getErrorCode())
                                                      .message(exception.getMessage())
+                                                     .build();
+
+        return ResponseEntity.badRequest().body(apiResponse);
+    }
+
+    @ExceptionHandler(value = AccessDeniedException.class)
+    ResponseEntity<ApiResponse<Object>> handleAccessDeniedException(AccessDeniedException exception) {
+        ApiResponse<Object> apiResponse = ApiResponse.builder()
+                                                     .code(APIStatus.UNAUTHORIZED.getCode())
+                                                     .message(APIStatus.UNAUTHORIZED.getMessage())
                                                      .build();
 
         return ResponseEntity.badRequest().body(apiResponse);

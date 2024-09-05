@@ -6,8 +6,10 @@ import org.huyhieu.dto.data.UserDto;
 import org.huyhieu.dto.request.UserCreateRequest;
 import org.huyhieu.dto.request.UserUpdateRequest;
 import org.huyhieu.dto.response.ApiResponse;
-import org.huyhieu.service.UserService;
 import org.huyhieu.enums.APIStatus;
+import org.huyhieu.service.UserService;
+import org.huyhieu.utils.ResponseUtils;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -26,36 +28,33 @@ public class UserController {
 
     // @Valid is used to define this object need to valid
     @PostMapping("/create/user")
-    public ApiResponse<UserDto> createUser(@RequestBody @Valid UserCreateRequest request) {
-        return ApiResponse.<UserDto>builder()
-                .code(APIStatus.SUCCESS.getCode())
-                .message(APIStatus.SUCCESS.getMessage())
-                .result(userService.createUser(request))
-                .build();
+    public ResponseEntity<ApiResponse<UserDto>> createUser(@RequestBody @Valid UserCreateRequest request) {
+        return ResponseUtils.buildResponseEntity(userService.createUser(request), APIStatus.SUCCESS);
     }
 
     @GetMapping("/users")
-    public List<UserDto> getUsers() {
-        return userService.getAllUsers();
+    public ResponseEntity<ApiResponse<List<UserDto>>> getUsers() {
+        return ResponseUtils.buildResponseEntity(userService.getAllUsers(), APIStatus.SUCCESS);
     }
 
     @GetMapping("/users/{userId}")
-    public UserDto getUser(@PathVariable("userId") Integer id) {
-        return userService.getUser(id);
+    public ResponseEntity<ApiResponse<UserDto>> getUser(@PathVariable("userId") Integer id) {
+        return ResponseUtils.buildResponseEntity(userService.getUser(id), APIStatus.SUCCESS);
     }
 
     @PutMapping("/update/user/{userId}")
-    public UserDto updateUser(@PathVariable("userId") Integer id, @RequestBody @Valid UserUpdateRequest request) {
-        return userService.updateUser(id, request);
+    public ResponseEntity<ApiResponse<UserDto>> updateUser(@PathVariable("userId") Integer id, @RequestBody @Valid UserUpdateRequest request) {
+        return ResponseUtils.buildResponseEntity(userService.updateUser(id, request), APIStatus.SUCCESS);
     }
 
     @DeleteMapping("/delete/user/{userId}")
-    public ApiResponse<Void> deleteUser(@PathVariable("userId") Integer userId) {
+    public ResponseEntity<ApiResponse<Void>> deleteUser(@PathVariable("userId") Integer userId) {
         userService.deleteUser(userId);
+        return ResponseUtils.buildResponseEntity(null, APIStatus.SUCCESS);
+    }
 
-        return ApiResponse.<Void>builder()
-                          .code(APIStatus.SUCCESS.getCode())
-                          .message(APIStatus.SUCCESS.getMessage())
-                          .build();
+    @GetMapping("/my-info")
+    public ResponseEntity<ApiResponse<UserDto>> getSelfInfo() {
+        return ResponseUtils.buildResponseEntity(userService.getMyInfo(), APIStatus.SUCCESS);
     }
 }

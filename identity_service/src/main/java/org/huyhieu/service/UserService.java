@@ -20,4 +20,6 @@ public interface UserService {
     UserDto updateUser(Integer id, UserUpdateRequest request);
 
     void deleteUser(Integer id);
+
+    UserDto getMyInfo();
 }

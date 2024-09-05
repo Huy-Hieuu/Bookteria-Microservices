@@ -16,6 +16,8 @@ import org.huyhieu.map.UserMapper;
 import org.huyhieu.repository.RoleRepository;
 import org.huyhieu.repository.UserRepository;
 import org.huyhieu.service.UserService;
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -41,6 +43,12 @@ public class UserServiceImpl implements UserService {
     RoleRepository roleRepository;
     PasswordEncoder passwordEncoder;
 
+    /*
+    * PreAutorize
+    * => Spring will create proxy in this method
+    *   => it will check role before execute this method
+    */
+    @PreAuthorize("hasRole('ADMIN')")
     @Override
     public List<UserDto> getAllUsers() {
         // The authentication holds details of who is authenticated
@@ -53,13 +61,17 @@ public class UserServiceImpl implements UserService {
         return UserMapper.INSTANCE.toUserDtos(users);
     }
 
+    /*
+    * PostAuthorize => Make sure that user can only get their own details
+    * */
+    @PreAuthorize("hasRole('USER') || hasRole('ADMIN')")
+    @PostAuthorize("hasRole('ADMIN') || (returnObject.username == authentication.name)")
     @Override
     public UserDto getUser(Integer id) {
         Optional<User> user = userRepository.findById(id);
 
-        return user
-                .map(UserMapper.INSTANCE::toUserDto)
-                .orElseThrow(() -> new UserAPIException(APIStatus.USER_NOT_FOUND));
+        return user.map(UserMapper.INSTANCE::toUserDto)
+                   .orElseThrow(() -> new UserAPIException(APIStatus.USER_NOT_FOUND));
     }
 
     @Override
@@ -107,5 +119,13 @@ public class UserServiceImpl implements UserService {
             throw new UserAPIException(APIStatus.USER_NOT_FOUND);
         }
         userRepository.deleteById(id);
+    }
+
+    @Override
+    public UserDto getMyInfo() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User authenticatedUser = userRepository.findByUsername(authentication.getName()).orElseThrow(() -> new UserAPIException(APIStatus.USERNAME_EXISTED));
+
+        return UserMapper.INSTANCE.toUserDto(authenticatedUser);
     }
 }
