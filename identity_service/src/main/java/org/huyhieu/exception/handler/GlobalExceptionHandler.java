@@ -2,9 +2,10 @@ package org.huyhieu.exception.handler;
 
 import lombok.extern.slf4j.Slf4j;
 import org.huyhieu.dto.response.ApiResponse;
-import org.huyhieu.exception.custom.UserAPIException;
-import org.huyhieu.utils.constants.Constants;
 import org.huyhieu.enums.APIStatus;
+import org.huyhieu.exception.custom.UserAPIException;
+import org.huyhieu.utils.ResponseUtils;
+import org.huyhieu.utils.constants.Constants;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.FieldError;
@@ -12,7 +13,6 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import java.util.Arrays;
 import java.util.Optional;
 
 @ControllerAdvice
@@ -21,34 +21,19 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(value = RuntimeException.class)
     ResponseEntity<ApiResponse<Object>> handleRuntimeException(RuntimeException exception) {
-        ApiResponse<Object> apiResponse = ApiResponse.builder()
-                                             .code(1009)
-                                             .message("Run Time Exception " + exception.getMessage())
-                                             .build();
-
         log.error("Run Time Exception occurred: ", exception);
 
-        return ResponseEntity.badRequest().body(apiResponse);
+        return ResponseUtils.buildResponseEntity(null, APIStatus.UNEXPECTED_ERROR);
     }
 
     @ExceptionHandler(value = UserAPIException.class)
     ResponseEntity<ApiResponse<Object>> handleUserAPIException(UserAPIException exception) {
-        ApiResponse<Object> apiResponse = ApiResponse.builder()
-                                                     .code(exception.getErrorCode())
-                                                     .message(exception.getMessage())
-                                                     .build();
-
-        return ResponseEntity.badRequest().body(apiResponse);
+        return ResponseUtils.buildResponseEntity(null, APIStatus.fromCode(exception.getErrorCode()));
     }
 
     @ExceptionHandler(value = AccessDeniedException.class)
     ResponseEntity<ApiResponse<Object>> handleAccessDeniedException(AccessDeniedException exception) {
-        ApiResponse<Object> apiResponse = ApiResponse.builder()
-                                                     .code(APIStatus.UNAUTHORIZED.getCode())
-                                                     .message(APIStatus.UNAUTHORIZED.getMessage())
-                                                     .build();
-
-        return ResponseEntity.badRequest().body(apiResponse);
+        return ResponseUtils.buildResponseEntity(null, APIStatus.UNAUTHORIZED);
     }
 
     // Catch exception from @Valid in Spring validation
@@ -64,14 +49,9 @@ public class GlobalExceptionHandler {
         } catch (IllegalArgumentException e) {
             apiStatus = APIStatus.ILLEGAL_ARGUMENT;
 
-            log.error(Arrays.toString(e.getStackTrace()));
+            log.error("Exception when validation, enumKey not found: ", e);
         }
 
-        ApiResponse<Object> apiResponse = ApiResponse.builder()
-                                                     .code(apiStatus.getCode())
-                                                     .message(apiStatus.getMessage())
-                                                     .build();
-
-        return ResponseEntity.badRequest().body(apiResponse);
+        return ResponseUtils.buildResponseEntity(null, apiStatus);
     }
 }

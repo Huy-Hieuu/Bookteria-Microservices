@@ -20,6 +20,6 @@ public final class ResponseUtils {
                                                 .result(result)
                                                 .build();
 
-        return apiStatus.getCode() == 1000 ? ResponseEntity.ok(apiResponse) : ResponseEntity.badRequest().body(apiResponse);
+        return ResponseEntity.status(apiStatus.getHttpStatus()).body(apiResponse);
     }
 }
