@@ -5,7 +5,7 @@ import org.huyhieu.dto.response.ApiResponse;
 import org.huyhieu.enums.APIStatus;
 import org.huyhieu.exception.custom.UserAPIException;
 import org.huyhieu.utils.ResponseUtils;
-import org.huyhieu.utils.constants.Constants;
+import org.huyhieu.utils.ConstantUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.FieldError;
@@ -41,7 +41,7 @@ public class GlobalExceptionHandler {
     ResponseEntity<ApiResponse<Object>> handleNotValidException(MethodArgumentNotValidException exception) {
         String enumKey = Optional.ofNullable(exception.getFieldError())
                                  .map(FieldError::getDefaultMessage)
-                                 .orElse(Constants.EMPTY_STRING);
+                                 .orElse(ConstantUtils.EMPTY_STRING);
 
         APIStatus apiStatus;
         try {

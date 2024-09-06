@@ -12,10 +12,15 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
  *
  * @author donh
  */
-public class HibernateUtil {
-    private static final Logger LOG = LogManager.getLogger(HibernateUtil.class);
+public class HibernateUtils {
+
+    private static final Logger LOG = LogManager.getLogger(HibernateUtils.class);
     private static StandardServiceRegistry registry;
     private static SessionFactory sessionFactory;
+
+    private HibernateUtils() {
+        // Utility class
+    }
 
     public static SessionFactory getSessionFactory() {
         if (sessionFactory == null) {

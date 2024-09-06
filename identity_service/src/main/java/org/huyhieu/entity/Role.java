@@ -1,11 +1,11 @@
 package org.huyhieu.entity;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.huyhieu.core.AbstractAuditableEntity;
 import org.huyhieu.enums.RoleEnum;
 
-import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;

@@ -19,7 +19,7 @@ import java.util.Set;
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserDto {
-    long id;
+    Integer id;
     String username;
     String firstName;
     String lastName;

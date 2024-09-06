@@ -8,7 +8,8 @@ import org.springframework.http.ResponseEntity;
 * Make final and declare private NoArgsConstructor.
 * => Make sure it can not be inherited
 * */
-public final class ResponseUtils {
+public class ResponseUtils {
+
     private ResponseUtils() {
         // Utility class => should not be instantiated
     }

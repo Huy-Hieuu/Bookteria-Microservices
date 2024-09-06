@@ -4,7 +4,7 @@
     <parent>
         <groupId>org.huyhieu</groupId>
         <artifactId>commons-service</artifactId>
-        <version>1.0.0</version>
+        <version>1.0-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath> <!-- Adjust the path as needed -->
     </parent>
 
@@ -14,6 +14,9 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <java.version>17</java.version>
     </properties>
 
     <dependencies>
@@ -73,6 +76,9 @@
                     <artifactId>maven-compiler-plugin</artifactId>
                     <version>3.11.0</version>
                     <configuration>
+                        <source>17</source>
+                        <target>17</target>
+
                         <annotationProcessorPaths>
                             <path>
                                 <groupId>org.projectlombok</groupId>

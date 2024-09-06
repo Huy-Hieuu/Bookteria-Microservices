@@ -4,7 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.huyhieu.entity.User;
 import org.huyhieu.repository.UserRepositoryCustom;
-import org.huyhieu.utils.HibernateUtil;
+import org.huyhieu.utils.HibernateUtils;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
@@ -16,7 +16,7 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
     @Override
     public User saveUser(User user) {
         Transaction transaction = null;
-        try(Session session = HibernateUtil.getSessionFactory().openSession()) {
+        try(Session session = HibernateUtils.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
             session.persist(user);
             transaction.commit();
@@ -31,7 +31,7 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
 
     @Override
     public List<User> getUsers() {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+        try (Session session = HibernateUtils.getSessionFactory().openSession()) {
             return session.createQuery("FROM User", User.class).list();
         }
     }
@@ -40,7 +40,7 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
     public User updateUser(User user) {
         Transaction transaction = null;
         User updatedUser = null;
-        try(Session session = HibernateUtil.getSessionFactory().openSession()) {
+        try(Session session = HibernateUtils.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
             updatedUser = (User) session.merge(user);
             transaction.commit();
@@ -57,7 +57,7 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
     @Override
     public void deleteUser(Long userId) {
         Transaction transaction = null;
-        try(Session session = HibernateUtil.getSessionFactory().openSession()) {
+        try(Session session = HibernateUtils.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
             session.delete(userId);
             transaction.commit();
@@ -74,7 +74,7 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
         Transaction transaction = null;
         User user = null;
 
-        try(Session session = HibernateUtil.getSessionFactory().openSession()) {
+        try(Session session = HibernateUtils.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
             user = session.load(User.class, userId);
             transaction.commit();

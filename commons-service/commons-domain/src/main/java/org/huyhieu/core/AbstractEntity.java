@@ -1,6 +1,7 @@
 package org.huyhieu.core;
 
-import javax.persistence.*;
+
+import jakarta.persistence.*;
 
 /**
  *  Base class for all Entities
