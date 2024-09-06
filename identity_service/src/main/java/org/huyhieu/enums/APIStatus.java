@@ -29,6 +29,7 @@ public enum APIStatus {
 
     UNAUTHORIZED(1005, "Unauthorized access", HttpStatus.UNAUTHORIZED),
     UNAUTHENTICATED(1008, "Unauthenticated", HttpStatus.UNAUTHORIZED),
+    FORBIDDEN(1010, "You do not have permission to access this resource!", HttpStatus.FORBIDDEN),
 
     UNEXPECTED_ERROR(9999, "Unexpected error", HttpStatus.BAD_REQUEST)
     ;

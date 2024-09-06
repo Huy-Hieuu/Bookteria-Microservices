@@ -1,6 +1,6 @@
 package org.huyhieu.service;
 
-import org.huyhieu.dto.data.UserDto;
+import org.huyhieu.dto.data.IdentityUserDto;
 import org.huyhieu.dto.request.UserCreateRequest;
 import org.huyhieu.dto.request.UserUpdateRequest;
 
@@ -11,15 +11,15 @@ import java.util.List;
  * @author donh
  */
 public interface UserService {
-    List<UserDto> getAllUsers();
+    List<IdentityUserDto> getAllUsers();
 
-    UserDto getUser(Integer id);
+    IdentityUserDto getUser(Integer id);
 
-    UserDto createUser(UserCreateRequest request);
+    IdentityUserDto createUser(UserCreateRequest request);
 
-    UserDto updateUser(Integer id, UserUpdateRequest request);
+    IdentityUserDto updateUser(Integer id, UserUpdateRequest request);
 
     void deleteUser(Integer id);
 
-    UserDto getMyInfo();
+    IdentityUserDto getMyInfo();
 }

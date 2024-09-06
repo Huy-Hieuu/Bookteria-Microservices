@@ -14,8 +14,8 @@ import org.huyhieu.dto.request.AuthenticationRequest;
 import org.huyhieu.dto.request.IntrospectionRequest;
 import org.huyhieu.dto.response.AuthenticationResponse;
 import org.huyhieu.dto.response.IntrospectionResponse;
-import org.huyhieu.entity.Role;
-import org.huyhieu.entity.User;
+import org.huyhieu.entity.IdentityRole;
+import org.huyhieu.entity.IdentityUser;
 import org.huyhieu.enums.APIStatus;
 import org.huyhieu.exception.custom.UserAPIException;
 import org.huyhieu.repository.UserRepository;
@@ -44,15 +44,15 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
-        User user = userRepository.findByUsername(request.getUsername())
-                                  .orElseThrow(() -> new UserAPIException(APIStatus.USER_NOT_EXISTED));
+        IdentityUser identityUser = userRepository.findByUsername(request.getUsername())
+                                                  .orElseThrow(() -> new UserAPIException(APIStatus.USER_NOT_EXISTED));
 
-        boolean isAuthenticated = passwordEncoder.matches(request.getPassword(), user.getPassword());
+        boolean isAuthenticated = passwordEncoder.matches(request.getPassword(), identityUser.getPassword());
         if (!isAuthenticated) {
             throw new UserAPIException(APIStatus.UNAUTHENTICATED);
         }
 
-        String token = generateToken(user);
+        String token = generateToken(identityUser);
 
         return AuthenticationResponse.builder()
                                      .token(token)
@@ -64,18 +64,18 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     * Need to add "role" to payload's claim => This need for spring security "auto" detect role
     * (Role is mentioned as "Scope" in default Prefix Authorities in Spring Security)
     * */
-    private String generateToken(User user) {
+    private String generateToken(IdentityUser identityUser) {
         // Header
         JWSHeader header = new JWSHeader(JWSAlgorithm.HS512);
 
         // Payload, body's data is called claim
         JWTClaimsSet jwtClaimsSet = new JWTClaimsSet.Builder()
-                .subject(user.getUsername())
+                .subject(identityUser.getUsername())
                 .issuer("huyhieu")
                 .issueTime(new Date())
                 .expirationTime(new Date(Instant.now().plus(1, ChronoUnit.HOURS).toEpochMilli()))
                 .claim("customClaim", "custom")
-                .claim("scope", buildRoles(user.getRoles()))
+                .claim("scope", buildRoles(identityUser.getIdentityRoles()))
                 .build();
 
         Payload payload = new Payload(jwtClaimsSet.toJSONObject());
@@ -107,10 +107,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     /*
     * Need to add space (" ") between these roles because it is convention in Spring Security
     * */
-    private String buildRoles(Set<Role> roles) {
+    private String buildRoles(Set<IdentityRole> identityRoles) {
         StringJoiner stringJoiner = new StringJoiner(" ");
 
-        roles.stream().map(role -> role.getType().name()).forEach(stringJoiner::add);
+        identityRoles.stream().map(role -> role.getType().name()).forEach(stringJoiner::add);
 
         return stringJoiner.toString();
     }

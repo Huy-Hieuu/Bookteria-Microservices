@@ -4,11 +4,11 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-import org.huyhieu.dto.data.UserDto;
+import org.huyhieu.dto.data.IdentityUserDto;
 import org.huyhieu.dto.request.UserCreateRequest;
 import org.huyhieu.dto.request.UserUpdateRequest;
-import org.huyhieu.entity.Role;
-import org.huyhieu.entity.User;
+import org.huyhieu.entity.IdentityRole;
+import org.huyhieu.entity.IdentityUser;
 import org.huyhieu.enums.APIStatus;
 import org.huyhieu.enums.RoleEnum;
 import org.huyhieu.exception.custom.UserAPIException;
@@ -50,15 +50,15 @@ public class UserServiceImpl implements UserService {
     */
     @PreAuthorize("hasRole('ADMIN')")
     @Override
-    public List<UserDto> getAllUsers() {
+    public List<IdentityUserDto> getAllUsers() {
         // The authentication holds details of who is authenticated
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         log.info("Username {}", authentication.getName());
         log.info("Roles {}", authentication.getAuthorities());
 
-        List<User> users = userRepository.findAll();
+        List<IdentityUser> identityUsers = userRepository.findAll();
 
-        return UserMapper.INSTANCE.toUserDtos(users);
+        return UserMapper.INSTANCE.toUserDtos(identityUsers);
     }
 
     /*
@@ -67,50 +67,50 @@ public class UserServiceImpl implements UserService {
     @PreAuthorize("hasRole('USER') || hasRole('ADMIN')")
     @PostAuthorize("hasRole('ADMIN') || (returnObject.username == authentication.name)")
     @Override
-    public UserDto getUser(Integer id) {
-        Optional<User> user = userRepository.findById(id);
+    public IdentityUserDto getUser(Integer id) {
+        Optional<IdentityUser> user = userRepository.findById(id);
 
         return user.map(UserMapper.INSTANCE::toUserDto)
                    .orElseThrow(() -> new UserAPIException(APIStatus.USER_NOT_FOUND));
     }
 
     @Override
-    public UserDto createUser(UserCreateRequest request) {
-        User user = UserMapper.INSTANCE.toUser(request);
+    public IdentityUserDto createUser(UserCreateRequest request) {
+        IdentityUser identityUser = UserMapper.INSTANCE.toUser(request);
 
-        if (userRepository.existsByUsername(user.getUsername())) {
+        if (userRepository.existsByUsername(identityUser.getUsername())) {
             throw new UserAPIException(APIStatus.USERNAME_EXISTED);
         }
 
-        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        identityUser.setPassword(passwordEncoder.encode(request.getPassword()));
 
         // Add role
-        Role role = roleRepository.findByType(RoleEnum.USER)
-                                  .orElseGet(() -> {
-                                      Role newRole = new Role();
-                                      newRole.setType(RoleEnum.USER);
+        IdentityRole identityRole = roleRepository.findByType(RoleEnum.USER)
+                                                  .orElseGet(() -> {
+                                      IdentityRole newIdentityRole = new IdentityRole();
+                                      newIdentityRole.setType(RoleEnum.USER);
 
-                                      return newRole;
+                                      return newIdentityRole;
                                   });
-        user.addRole(role);
+        identityUser.addRole(identityRole);
 
-        return UserMapper.INSTANCE.toUserDto(userRepository.save(user));
+        return UserMapper.INSTANCE.toUserDto(userRepository.save(identityUser));
     }
 
     @Override
-    public UserDto updateUser(Integer id, UserUpdateRequest request) {
-        User user = userRepository.findUserById(id);
+    public IdentityUserDto updateUser(Integer id, UserUpdateRequest request) {
+        IdentityUser identityUser = userRepository.findUserById(id);
 
-        if (user == null) {
+        if (identityUser == null) {
             throw new UserAPIException(APIStatus.USER_NOT_FOUND);
         }
 
-        user.setUsername(request.getUsername());
-        user.setFirstName(request.getFirstName());
-        user.setLastName(request.getLastName());
-        user.setDob(request.getDob());
+        identityUser.setUsername(request.getUsername());
+        identityUser.setFirstName(request.getFirstName());
+        identityUser.setLastName(request.getLastName());
+        identityUser.setDob(request.getDob());
         
-        return UserMapper.INSTANCE.toUserDto(userRepository.updateUser(user));
+        return UserMapper.INSTANCE.toUserDto(userRepository.updateUser(identityUser));
     }
 
     @Override
@@ -122,10 +122,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto getMyInfo() {
+    public IdentityUserDto getMyInfo() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User authenticatedUser = userRepository.findByUsername(authentication.getName()).orElseThrow(() -> new UserAPIException(APIStatus.USERNAME_EXISTED));
+        IdentityUser authenticatedIdentityUser = userRepository.findByUsername(authentication.getName()).orElseThrow(() -> new UserAPIException(APIStatus.USERNAME_EXISTED));
 
-        return UserMapper.INSTANCE.toUserDto(authenticatedUser);
+        return UserMapper.INSTANCE.toUserDto(authenticatedIdentityUser);
     }
 }

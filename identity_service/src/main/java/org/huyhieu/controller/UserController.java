@@ -3,7 +3,7 @@ package org.huyhieu.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.huyhieu.dto.data.UserDto;
+import org.huyhieu.dto.data.IdentityUserDto;
 import org.huyhieu.dto.request.UserCreateRequest;
 import org.huyhieu.dto.request.UserUpdateRequest;
 import org.huyhieu.dto.response.ApiResponse;
@@ -28,22 +28,22 @@ public class UserController {
 
     // @Valid is used to define this object need to valid
     @PostMapping("/create/user")
-    public ResponseEntity<ApiResponse<UserDto>> createUser(@RequestBody @Valid UserCreateRequest request) {
+    public ResponseEntity<ApiResponse<IdentityUserDto>> createUser(@RequestBody @Valid UserCreateRequest request) {
         return ResponseUtils.buildResponseEntity(userService.createUser(request), APIStatus.SUCCESS);
     }
 
     @GetMapping("/users")
-    public ResponseEntity<ApiResponse<List<UserDto>>> getUsers() {
+    public ResponseEntity<ApiResponse<List<IdentityUserDto>>> getUsers() {
         return ResponseUtils.buildResponseEntity(userService.getAllUsers(), APIStatus.SUCCESS);
     }
 
     @GetMapping("/users/{userId}")
-    public ResponseEntity<ApiResponse<UserDto>> getUser(@PathVariable("userId") Integer id) {
+    public ResponseEntity<ApiResponse<IdentityUserDto>> getUser(@PathVariable("userId") Integer id) {
         return ResponseUtils.buildResponseEntity(userService.getUser(id), APIStatus.SUCCESS);
     }
 
     @PutMapping("/update/user/{userId}")
-    public ResponseEntity<ApiResponse<UserDto>> updateUser(@PathVariable("userId") Integer id, @RequestBody @Valid UserUpdateRequest request) {
+    public ResponseEntity<ApiResponse<IdentityUserDto>> updateUser(@PathVariable("userId") Integer id, @RequestBody @Valid UserUpdateRequest request) {
         return ResponseUtils.buildResponseEntity(userService.updateUser(id, request), APIStatus.SUCCESS);
     }
 
@@ -54,7 +54,7 @@ public class UserController {
     }
 
     @GetMapping("/my-info")
-    public ResponseEntity<ApiResponse<UserDto>> getSelfInfo() {
+    public ResponseEntity<ApiResponse<IdentityUserDto>> getSelfInfo() {
         return ResponseUtils.buildResponseEntity(userService.getMyInfo(), APIStatus.SUCCESS);
     }
 }

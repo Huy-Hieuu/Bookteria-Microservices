@@ -3,13 +3,19 @@
 <hibernate-configuration>
     <session-factory>
         <!-- JDBC Database connection settings -->
-        <property name="hibernate.connection.driver_class">com.mysql.cj.jdbc.Driver</property>
-        <property name="hibernate.connection.url">jdbc:mysql://localhost:3307/identity_service</property>
-        <property name="hibernate.connection.username">root</property>
-        <property name="hibernate.connection.password">huyhieu</property>
+<!--        <property name="hibernate.connection.driver_class">com.mysql.cj.jdbc.Driver</property>-->
+<!--        <property name="hibernate.connection.url">jdbc:mysql://localhost:3307/identity_service</property>-->
+<!--        <property name="hibernate.connection.username">root</property>-->
+<!--        <property name="hibernate.connection.password">huyhieu</property>-->
+
+        <property name="hibernate.connection.driver_class">com.microsoft.sqlserver.jdbc.SQLServerDriver</property>
+        <property name="hibernate.connection.url">jdbc:sqlserver://localhost:1433;databaseName=identity_service</property>
+        <property name="hibernate.connection.username">sa</property>
+        <property name="hibernate.connection.password">MyStrong!Passw0rd</property>
 
         <!-- Specify dialect -->
-        <property name="hibernate.dialect">org.hibernate.dialect.MySQL8Dialect</property>
+<!--        <property name="hibernate.dialect">org.hibernate.dialect.MySQL8Dialect</property>-->
+        <property name="hibernate.dialect">org.hibernate.dialect.SQLServerDialect</property>
 
         <!-- Echo all executed SQL to stdout -->
         <property name="hibernate.show_sql">true</property>
@@ -18,7 +24,7 @@
         <property name="hibernate.hbm2ddl.auto">update</property>
 
         <!-- Names the annotated entity class -->
-        <mapping class="org.huyhieu.entity.User"/>
-        <mapping class="org.huyhieu.entity.Role"/>
+        <mapping class="org.huyhieu.entity.IdentityUser"/>
+        <mapping class="org.huyhieu.entity.IdentityRole"/>
     </session-factory>
 </hibernate-configuration>

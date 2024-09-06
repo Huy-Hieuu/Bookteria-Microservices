@@ -1,6 +1,6 @@
 package org.huyhieu.repository;
 
-import org.huyhieu.entity.User;
+import org.huyhieu.entity.IdentityUser;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -11,9 +11,9 @@ import java.util.List;
  */
 @Repository
 public interface UserRepositoryCustom {
-    User saveUser(User user);
-    List<User> getUsers();
-    User updateUser(User user);
+    IdentityUser saveUser(IdentityUser identityUser);
+    List<IdentityUser> getUsers();
+    IdentityUser updateUser(IdentityUser identityUser);
     void deleteUser(Long userId);
-    User findUserById(Integer userId);
+    IdentityUser findUserById(Integer userId);
 }

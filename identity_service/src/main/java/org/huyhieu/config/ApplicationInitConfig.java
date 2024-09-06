@@ -3,8 +3,8 @@ package org.huyhieu.config;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.huyhieu.entity.Role;
-import org.huyhieu.entity.User;
+import org.huyhieu.entity.IdentityRole;
+import org.huyhieu.entity.IdentityUser;
 import org.huyhieu.enums.RoleEnum;
 import org.huyhieu.repository.UserRepository;
 import org.springframework.boot.ApplicationRunner;
@@ -28,15 +28,15 @@ public class ApplicationInitConfig {
     ApplicationRunner applicationRunner(UserRepository userRepository) {
         return args -> {
             if (!userRepository.findByUsername(ADMIN).isPresent()) {
-                Role role = new Role();
-                role.setType(RoleEnum.ADMIN);
+                IdentityRole identityRole = new IdentityRole();
+                identityRole.setType(RoleEnum.ADMIN);
 
-                User user = new User();
-                user.setUsername(ADMIN);
-                user.addRole(role);
-                user.setPassword(passwordEncoder.encode(ADMIN));
+                IdentityUser identityUser = new IdentityUser();
+                identityUser.setUsername(ADMIN);
+                identityUser.addRole(identityRole);
+                identityUser.setPassword(passwordEncoder.encode(ADMIN));
 
-                userRepository.save(user);
+                userRepository.save(identityUser);
                 log.warn("admin user has been created with default password: admin => please change it");
             }
         };

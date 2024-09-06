@@ -18,7 +18,7 @@ import java.util.Set;
 @Getter
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class UserDto {
+public class IdentityUserDto {
     Integer id;
     String username;
     String firstName;

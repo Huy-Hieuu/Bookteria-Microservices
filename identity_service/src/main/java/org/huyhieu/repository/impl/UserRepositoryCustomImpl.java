@@ -2,7 +2,7 @@ package org.huyhieu.repository.impl;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.huyhieu.entity.User;
+import org.huyhieu.entity.IdentityUser;
 import org.huyhieu.repository.UserRepositoryCustom;
 import org.huyhieu.utils.HibernateUtils;
 import org.hibernate.Session;
@@ -14,11 +14,11 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
     private static final Logger LOG = LogManager.getLogger(UserRepositoryCustomImpl.class);
 
     @Override
-    public User saveUser(User user) {
+    public IdentityUser saveUser(IdentityUser identityUser) {
         Transaction transaction = null;
         try(Session session = HibernateUtils.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
-            session.persist(user);
+            session.persist(identityUser);
             transaction.commit();
         } catch (Exception e) {
             if (transaction != null) {
@@ -26,23 +26,23 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
             }
             LOG.error(e);
         }
-        return user;
+        return identityUser;
     }
 
     @Override
-    public List<User> getUsers() {
+    public List<IdentityUser> getUsers() {
         try (Session session = HibernateUtils.getSessionFactory().openSession()) {
-            return session.createQuery("FROM User", User.class).list();
+            return session.createQuery("FROM User", IdentityUser.class).list();
         }
     }
 
     @Override
-    public User updateUser(User user) {
+    public IdentityUser updateUser(IdentityUser identityUser) {
         Transaction transaction = null;
-        User updatedUser = null;
+        IdentityUser updatedIdentityUser = null;
         try(Session session = HibernateUtils.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
-            updatedUser = (User) session.merge(user);
+            updatedIdentityUser = (IdentityUser) session.merge(identityUser);
             transaction.commit();
         } catch (Exception e) {
             if (transaction != null) {
@@ -51,7 +51,7 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
             LOG.error(e.getStackTrace());
         }
 
-        return updatedUser;
+        return updatedIdentityUser;
     }
 
     @Override
@@ -70,13 +70,13 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
     }
 
     @Override
-    public User findUserById(Integer userId) {
+    public IdentityUser findUserById(Integer userId) {
         Transaction transaction = null;
-        User user = null;
+        IdentityUser identityUser = null;
 
         try(Session session = HibernateUtils.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
-            user = session.load(User.class, userId);
+            identityUser = session.load(IdentityUser.class, userId);
             transaction.commit();
         } catch (Exception e) {
             if (transaction != null) {
@@ -85,6 +85,6 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
             LOG.error(e.getStackTrace());
         }
 
-        return user;
+        return identityUser;
     }
 }

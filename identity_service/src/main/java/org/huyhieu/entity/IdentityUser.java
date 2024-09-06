@@ -20,14 +20,14 @@ import java.util.Set;
  * @author donh
  */
 @Entity
-@Table(name = "user", schema = "identity_service")
+@Table(name = "identity_user")
 @Getter
 @Setter
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@AttributeOverride(name = "id", column = @Column(name = "USER_ID"))
-public class User extends AbstractAuditableEntity {
-    @Column(name = "PASSWORD")
+@AttributeOverride(name = "id", column = @Column(name = "IDENTITY_USER_ID"))
+public class IdentityUser extends AbstractAuditableEntity {
+    @Column(name = "[PASSWORD]")
     String password;
 
     @Column(name = "USER_NAME")
@@ -39,7 +39,7 @@ public class User extends AbstractAuditableEntity {
     @Column(name = "LAST_NAME")
     String lastName;
 
-    @Column(name = "DOB")
+    @Column(name = "[DOB]")
     LocalDate dob;
 
     @Fetch(FetchMode.SUBSELECT)
@@ -49,16 +49,26 @@ public class User extends AbstractAuditableEntity {
             joinColumns = @JoinColumn(name = "USER_ID"),
             inverseJoinColumns = @JoinColumn(name = "ROLE_ID")
     )
-    @JsonIgnoreProperties(value = {"users"})
-    Set<Role> roles = new HashSet<>();
+    @JsonIgnoreProperties(value = "identityUsers")
+    Set<IdentityRole> identityRoles = new HashSet<>();
 
-    public void addRole(Role role) {
-        this.roles.add(role);
-        role.getUsers().add(this);
+    public void addRole(IdentityRole identityRole) {
+        this.identityRoles.add(identityRole);
+        identityRole.getIdentityUsers().add(this);
     }
 
-    public void removeRole(Role role) {
-        this.roles.remove(role);
-        role.getUsers().remove(this);
+    public void removeRole(IdentityRole identityRole) {
+        this.identityRoles.remove(identityRole);
+        identityRole.getIdentityUsers().remove(this);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return super.equals(obj);
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
     }
 }

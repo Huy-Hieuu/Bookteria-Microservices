@@ -1,13 +1,13 @@
 package org.huyhieu.repository;
 
-import org.huyhieu.entity.User;
+import org.huyhieu.entity.IdentityUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, Integer>, UserRepositoryCustom {
+public interface UserRepository extends JpaRepository<IdentityUser, Integer>, UserRepositoryCustom {
     boolean existsByUsername(String username);
-    Optional<User> findByUsername(String username);
+    Optional<IdentityUser> findByUsername(String username);
 }

@@ -1,10 +1,10 @@
 package org.huyhieu.map;
 
-import org.huyhieu.dto.data.UserDto;
+import org.huyhieu.dto.data.IdentityUserDto;
 import org.huyhieu.dto.request.UserCreateRequest;
 import org.huyhieu.dto.request.UserUpdateRequest;
-import org.huyhieu.entity.Role;
-import org.huyhieu.entity.User;
+import org.huyhieu.entity.IdentityRole;
+import org.huyhieu.entity.IdentityUser;
 import org.huyhieu.enums.RoleEnum;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -20,19 +20,20 @@ import java.util.List;
 public interface UserMapper {
     UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
 
-    UserDto toUserDto(User user);
+    @Mapping(target = "roles", source = "identityRoles")
+    IdentityUserDto toUserDto(IdentityUser identityUser);
 
-    default RoleEnum toRoleEnum(Role role) {
-        return role.getType();
+    default RoleEnum toRoleEnum(IdentityRole identityRole) {
+        return identityRole.getType();
     }
 
-    List<UserDto> toUserDtos(List<User> users);
+    List<IdentityUserDto> toUserDtos(List<IdentityUser> identityUsers);
 
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "roles", ignore = true)
-    User toUser(UserUpdateRequest request);
+    @Mapping(target = "identityRoles", ignore = true)
+    IdentityUser toUser(UserUpdateRequest request);
 
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "roles", ignore = true)
-    User toUser(UserCreateRequest request);
+    @Mapping(target = "identityRoles", ignore = true)
+    IdentityUser toUser(UserCreateRequest request);
 }

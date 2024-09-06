@@ -33,7 +33,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(value = AccessDeniedException.class)
     ResponseEntity<ApiResponse<Object>> handleAccessDeniedException(AccessDeniedException exception) {
-        return ResponseUtils.buildResponseEntity(null, APIStatus.UNAUTHORIZED);
+        return ResponseUtils.buildResponseEntity(null, APIStatus.FORBIDDEN);
     }
 
     // Catch exception from @Valid in Spring validation

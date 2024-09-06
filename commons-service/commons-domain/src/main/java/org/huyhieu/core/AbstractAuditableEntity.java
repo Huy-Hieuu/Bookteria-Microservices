@@ -47,4 +47,14 @@ public abstract class AbstractAuditableEntity extends AbstractEntity {
 //        setLastModifiedBy(UserUtils.getUserName());
 //        setLastModificationDate(DateUtils.getCurrentDateTime());
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        return super.equals(obj);
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
 }

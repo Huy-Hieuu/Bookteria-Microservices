@@ -2,6 +2,8 @@ package org.huyhieu.core;
 
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  *  Base class for all Entities
@@ -11,10 +13,6 @@ import jakarta.persistence.*;
  */
 @MappedSuperclass
 public abstract class AbstractEntity {
-    /**
-     * Extracts the class name of the closest non-synthetic super class (to be able to compare across proxy entities
-     * from QueryDSL, hibernate, etc...).
-     */
     protected static String getRawClassName(Class<?> baseClass) {
         Class<?> clazz = baseClass;
         while (isSyntheticClass(clazz)) {
@@ -40,18 +38,12 @@ public abstract class AbstractEntity {
     @Transient
     private String rawClassName = getRawClassName(getClass());
 
+    @Setter
+    @Getter
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(updatable = false, nullable = false)
     protected Integer id;
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public boolean isPersisted() {
         return this.id != null;
@@ -80,9 +72,6 @@ public abstract class AbstractEntity {
         return false;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int hashCode() {
         if (!isPersisted()) { // is new or is in transient state.
