@@ -2,9 +2,7 @@ package org.huyhieu.dto.request;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDate;
 
@@ -15,6 +13,8 @@ import java.time.LocalDate;
 @Builder(toBuilder = true)
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserUpdateRequest {
     @Size(min = 1, max = 50, message = "User Name must be in [1, 50]")
     @NotNull

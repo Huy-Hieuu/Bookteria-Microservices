@@ -25,7 +25,7 @@ public enum APIStatus {
     PASSWORD_INVALID(1007, "Invalid Password", HttpStatus.BAD_REQUEST),
 
     USER_NOT_FOUND(1001, "User not found", HttpStatus.NOT_FOUND),
-    USER_NOT_EXISTED(1007, "User not existed", HttpStatus.NOT_FOUND),
+    USER_NOT_EXISTED(1009, "User not existed", HttpStatus.NOT_FOUND),
 
     UNAUTHORIZED(1005, "Unauthorized access", HttpStatus.UNAUTHORIZED),
     UNAUTHENTICATED(1008, "Unauthenticated", HttpStatus.UNAUTHORIZED),

@@ -2,9 +2,7 @@ package org.huyhieu.dto.request;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDate;
 
@@ -15,8 +13,10 @@ import java.time.LocalDate;
 @Builder(toBuilder = true)
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserCreateRequest {
-    // Passing string enum here because validation can not pass constant string in enum (USERNAME_INVALID.getName)
+    // Passing string enum here because validation can not pass constant string in enum (USERNAME_INVALID.name)
     @Size(min = 1, max = 50, message = "USERNAME_INVALID")
     @NotNull
     private String username;
