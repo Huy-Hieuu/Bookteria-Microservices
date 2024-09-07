@@ -2,6 +2,7 @@ package org.huyhieu.config;
 
 import com.google.common.collect.Lists;
 import org.apache.commons.lang3.tuple.Pair;
+import org.huyhieu.security.JwtAuthenticationEntryPoint;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -48,13 +49,15 @@ public class SecurityConfig {
 
         httpSecurity.authorizeHttpRequests(
                 requests -> requests.requestMatchers(requestMatchers).permitAll()
-                                    .anyRequest().authenticated());
+                                    .anyRequest().authenticated()
+        );
 
         httpSecurity.oauth2ResourceServer(
-                oAuth2Configurer -> oAuth2Configurer.jwt(
-                        jwtConfigurer -> jwtConfigurer.decoder(jwtDecoder())
-                                                      .jwtAuthenticationConverter(jwtAuthenticationConverter())
-                ));
+                oAuth2Configurer -> oAuth2Configurer
+                        .jwt(jwtConfigurer -> jwtConfigurer.decoder(jwtDecoder())
+                                                           .jwtAuthenticationConverter(jwtAuthenticationConverter()))
+                        .authenticationEntryPoint(new JwtAuthenticationEntryPoint())
+        );
 
         // Temporarily disable CSRF
         httpSecurity.csrf(AbstractHttpConfigurer::disable);
