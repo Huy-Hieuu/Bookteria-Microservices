@@ -21,6 +21,6 @@
 
     <modules>
         <module>commons-service</module>
-        <module>identity_service</module>
+        <module>identity-service</module>
     </modules>
 </project>

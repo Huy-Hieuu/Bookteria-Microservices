@@ -41,8 +41,8 @@ public abstract class AbstractEntity {
     @Setter
     @Getter
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(updatable = false, nullable = false)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Column(updatable = false)
     protected Integer id;
 
     public boolean isPersisted() {
