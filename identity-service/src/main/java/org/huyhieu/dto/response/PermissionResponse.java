@@ -1,16 +1,15 @@
 package org.huyhieu.dto.response;
 
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.huyhieu.enums.PermissionType;
 
-@Builder(toBuilder = true)
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class PermissionResponse {
-    PermissionType type;
+    List<PermissionType> types = new ArrayList<>();
 }

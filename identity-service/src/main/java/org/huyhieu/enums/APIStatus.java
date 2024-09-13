@@ -31,9 +31,11 @@ public enum APIStatus {
     // PERMISSION,
     PERMISSION_NOT_EXISTED(1009, "Permission is not existed", HttpStatus.NOT_FOUND),
     PERMISSION_EXISTED(1010, "Permission is already existed", HttpStatus.BAD_REQUEST),
+    PERMISSION_NOT_FOUND(1013, "Permission not found", HttpStatus.NOT_FOUND),
 
     // ROLE,
     ROLE_EXISTED(1011, "Role is already existed", HttpStatus.BAD_REQUEST),
+    ROLE_NOT_FOUND(1012, "Role not found", HttpStatus.NOT_FOUND),
 
     INVALID_REQUEST(9996, "Invalid request", HttpStatus.BAD_REQUEST),
     INTERNAL_SERVER_ERROR(9997, "Internal server error", HttpStatus.BAD_REQUEST),

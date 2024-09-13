@@ -21,33 +21,33 @@ import java.util.List;
  */
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api")
+@RequestMapping("/api/users")
 @Slf4j
 public class UserController {
     private final UserService userService;
 
     // @Valid is used to define this object need to valid
-    @PostMapping("/create/user")
+    @PostMapping("/create")
     public ResponseEntity<APIResponse<IdentityUserDto>> createUser(@RequestBody @Valid UserCreateRequest request) {
         return ResponseUtils.buildResponseEntity(userService.createUser(request), APIStatus.SUCCESS);
     }
 
-    @GetMapping("/users")
+    @GetMapping
     public ResponseEntity<APIResponse<List<IdentityUserDto>>> getUsers() {
         return ResponseUtils.buildResponseEntity(userService.getAllUsers(), APIStatus.SUCCESS);
     }
 
-    @GetMapping("/users/{userId}")
+    @GetMapping("/{userId}")
     public ResponseEntity<APIResponse<IdentityUserDto>> getUser(@PathVariable("userId") Integer id) {
         return ResponseUtils.buildResponseEntity(userService.getUser(id), APIStatus.SUCCESS);
     }
 
-    @PutMapping("/update/user/{userId}")
+    @PutMapping("/update/{userId}")
     public ResponseEntity<APIResponse<IdentityUserDto>> updateUser(@PathVariable("userId") Integer id, @RequestBody @Valid UserUpdateRequest request) {
         return ResponseUtils.buildResponseEntity(userService.updateUser(id, request), APIStatus.SUCCESS);
     }
 
-    @DeleteMapping("/delete/user/{userId}")
+    @DeleteMapping("/delete/{userId}")
     public ResponseEntity<APIResponse<Void>> deleteUser(@PathVariable("userId") Integer userId) {
         userService.deleteUser(userId);
         return ResponseUtils.buildResponseEntity(null, APIStatus.SUCCESS);

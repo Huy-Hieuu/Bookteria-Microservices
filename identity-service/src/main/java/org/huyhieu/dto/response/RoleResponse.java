@@ -7,13 +7,11 @@ import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 import org.huyhieu.enums.RoleType;
 
-import java.util.Set;
-
 @Builder(toBuilder = true)
 @Getter
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class RoleResponse {
     RoleType type;
-    Set<PermissionResponse> permissionResponses;
+    PermissionResponse permissionResponse;
 }

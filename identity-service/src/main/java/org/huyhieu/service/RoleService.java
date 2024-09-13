@@ -11,8 +11,7 @@ public interface RoleService {
 
     RoleResponse updateRole(RoleRequest request);
 
-
-    List<RoleResponse> getAllRoles(RoleRequest request);
+    List<RoleResponse> getAllRoles();
 
     void deleteRole(RoleType type);
 }

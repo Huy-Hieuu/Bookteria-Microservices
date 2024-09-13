@@ -13,23 +13,21 @@ import org.huyhieu.service.PermissionService;
 import org.huyhieu.utils.ResponseUtils;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/permission")
+@RequestMapping("/api/permissions")
 @Slf4j
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class PermissionController {
     PermissionService permissionService;
 
-    @PostMapping
+    @PostMapping("/create")
     APIResponse<PermissionResponse> createPermisison(@RequestBody PermissionRequest request) {
-        return ResponseUtils.buildAPIResponse(permissionService.createPermission(request), APIStatus.SUCCESS);
+        return ResponseUtils.buildAPIResponse(permissionService.createPermissions(request), APIStatus.SUCCESS);
     }
 
     @GetMapping
-    APIResponse<List<PermissionResponse>> getAllPermissions() {
+    APIResponse<PermissionResponse> getAllPermissions() {
         return ResponseUtils.buildAPIResponse(permissionService.getAllPermissions(), APIStatus.SUCCESS);
     }
 

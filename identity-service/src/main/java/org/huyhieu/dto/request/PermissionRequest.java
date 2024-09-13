@@ -4,12 +4,14 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.huyhieu.enums.PermissionType;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 @Setter
-@Builder(toBuilder = true)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @NoArgsConstructor
 @AllArgsConstructor
 public class PermissionRequest {
-    PermissionType type;
+    List<PermissionType> types = new ArrayList<>();
 }

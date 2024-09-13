@@ -25,18 +25,18 @@ public class PermissionServiceImpl implements PermissionService {
     PermissionRepository permissionRepository;
 
     @Override
-    public PermissionResponse createPermission(PermissionRequest request) {
-        IdentityPermission identityPermission = PermissionMapper.INSTANCE.toIdentityPermission(request);
-        identityPermission = permissionRepository.save(identityPermission);
+    public PermissionResponse createPermissions(PermissionRequest request) {
+        List<IdentityPermission> identityPermissions = PermissionMapper.INSTANCE.mapTypesToIdentityPermissions(request.getTypes());
+        identityPermissions = permissionRepository.saveAll(identityPermissions);
 
-        return PermissionMapper.INSTANCE.toPermissionResponse(identityPermission);
+        return PermissionMapper.INSTANCE.toPermissionResponse(identityPermissions);
     }
 
     @Override
-    public List<PermissionResponse> getAllPermissions() {
+    public PermissionResponse getAllPermissions() {
         List<IdentityPermission> permissions = permissionRepository.findAll();
 
-        return PermissionMapper.INSTANCE.toPermissionResponses(permissions);
+        return PermissionMapper.INSTANCE.toPermissionResponse(permissions);
     }
 
     @Override

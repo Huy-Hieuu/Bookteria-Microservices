@@ -24,6 +24,7 @@ import java.util.Set;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @AttributeOverride(name = "id", column = @Column(name = "IDENTITY_ROLE_ID"))
 public class IdentityRole extends AbstractAuditableEntity {
+
     @Enumerated(EnumType.STRING)
     @Column(name = "ROLE_TYPE")
     RoleType type;
@@ -41,6 +42,8 @@ public class IdentityRole extends AbstractAuditableEntity {
     )
     @JsonIgnoreProperties(value = "identityRoles")
     Set<IdentityPermission> identityPermissions = new HashSet<>();
+
+
 
     public void addPermission(IdentityPermission identityPermission) {
         this.identityPermissions.add(identityPermission);

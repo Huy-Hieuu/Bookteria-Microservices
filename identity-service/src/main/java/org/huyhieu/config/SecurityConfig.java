@@ -38,7 +38,7 @@ public class SecurityConfig {
     private static final List<Pair<String, String>> PUBLIC_END_POINTS
             = Lists.newArrayList(Pair.of("/auth/token", HttpMethod.POST.name()),
                                  Pair.of("/auth/introspect", HttpMethod.POST.name()),
-                                 Pair.of("/api/create/user", HttpMethod.POST.name()));
+                                 Pair.of("/api/users/create", HttpMethod.POST.name()));
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {

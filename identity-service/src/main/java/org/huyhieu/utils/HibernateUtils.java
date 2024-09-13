@@ -1,5 +1,7 @@
 package org.huyhieu.utils;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.SessionFactory;
@@ -12,15 +14,12 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
  *
  * @author donh
  */
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class HibernateUtils {
 
     private static final Logger LOG = LogManager.getLogger(HibernateUtils.class);
     private static StandardServiceRegistry registry;
     private static SessionFactory sessionFactory;
-
-    private HibernateUtils() {
-        // Utility class
-    }
 
     public static SessionFactory getSessionFactory() {
         if (sessionFactory == null) {
