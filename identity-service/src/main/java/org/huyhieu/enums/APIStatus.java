@@ -40,7 +40,10 @@ public enum APIStatus {
     INVALID_REQUEST(9996, "Invalid request", HttpStatus.BAD_REQUEST),
     INTERNAL_SERVER_ERROR(9997, "Internal server error", HttpStatus.BAD_REQUEST),
     ILLEGAL_ARGUMENT(9998, "Illegal argument in backend", HttpStatus.BAD_REQUEST),
-    UNEXPECTED_ERROR(9999, "Unexpected error", HttpStatus.BAD_REQUEST)
+    UNEXPECTED_ERROR(9999, "Unexpected error", HttpStatus.BAD_REQUEST),
+
+    // VALIDATION ERROR
+    DOB_INVALID(2000, "Invalid date of birth", HttpStatus.BAD_REQUEST),
     ;
 
     private static final Map<Integer, APIStatus> API_STATUS_INTEGER_MAP;

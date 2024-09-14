@@ -3,6 +3,7 @@ package org.huyhieu.dto.request;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
+import org.huyhieu.validator.DOBConstraint;
 
 import java.time.LocalDate;
 
@@ -33,5 +34,6 @@ public class UserCreateRequest {
     @NotNull
     private String lastName;
 
+    @DOBConstraint(minAge = 5, message = "DOB_INVALID")
     private LocalDate dob;
 }
