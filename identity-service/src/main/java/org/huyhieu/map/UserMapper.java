@@ -16,7 +16,7 @@ import java.util.List;
  *
  * @author donh
  */
-@Mapper(config = MapperConfig.class)
+@Mapper(config = MapperConfig.class, uses = {RoleMapper.class})
 public interface UserMapper {
     UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
 

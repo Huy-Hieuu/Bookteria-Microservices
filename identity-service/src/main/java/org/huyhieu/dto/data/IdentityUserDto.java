@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.FieldDefaults;
-import org.huyhieu.enums.RoleType;
+import org.huyhieu.dto.response.RoleResponse;
 
 import java.time.LocalDate;
 import java.util.Set;
@@ -24,5 +24,5 @@ public class IdentityUserDto {
     String firstName;
     String lastName;
     LocalDate dob;
-    Set<RoleType> roles;
+    Set<RoleResponse> roles;
 }

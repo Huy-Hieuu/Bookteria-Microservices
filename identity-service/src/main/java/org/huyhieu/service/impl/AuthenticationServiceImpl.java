@@ -20,6 +20,7 @@ import org.huyhieu.enums.APIStatus;
 import org.huyhieu.exception.custom.APIException;
 import org.huyhieu.repository.UserRepository;
 import org.huyhieu.service.AuthenticationService;
+import org.huyhieu.utils.ConstantUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -108,9 +109,16 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     * Need to add space (" ") between these roles because it is convention in Spring Security
     * */
     private String buildRoles(Set<IdentityRole> identityRoles) {
-        StringJoiner stringJoiner = new StringJoiner(" ");
+        StringJoiner stringJoiner = new StringJoiner(ConstantUtils.SPACE);
 
-        identityRoles.stream().map(role -> role.getType().name()).forEach(stringJoiner::add);
+        identityRoles.stream().map(role -> role.getType().name())
+                     .forEach(roleType -> stringJoiner.add(ConstantUtils.ROLE_PREFIX + roleType));
+
+        identityRoles.stream()
+                     .flatMap(role -> role.getIdentityPermissions().stream())
+                     .map(permission -> permission.getType().name())
+                     .distinct()
+                     .forEach(stringJoiner::add);
 
         return stringJoiner.toString();
     }

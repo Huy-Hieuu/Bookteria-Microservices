@@ -13,5 +13,5 @@ import org.huyhieu.enums.RoleType;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class RoleResponse {
     RoleType type;
-    PermissionResponse permissionResponse;
+    PermissionResponse permission;
 }

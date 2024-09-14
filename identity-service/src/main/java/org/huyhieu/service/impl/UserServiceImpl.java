@@ -47,8 +47,11 @@ public class UserServiceImpl implements UserService {
     * PreAutorize
     * => Spring will create proxy in this method
     *   => it will check role before execute this method
+    *
+    * hasRole only works with scopes has prefix ROLE_
     */
-    @PreAuthorize("hasRole('ADMIN')")
+    //    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('APPROVE_POST')")
     @Override
     public List<IdentityUserDto> getAllUsers() {
         // The authentication holds details of who is authenticated
@@ -87,11 +90,11 @@ public class UserServiceImpl implements UserService {
         // Add role
         IdentityRole identityRole = roleRepository.findByType(RoleType.USER)
                                                   .orElseGet(() -> {
-                                      IdentityRole newIdentityRole = new IdentityRole();
-                                      newIdentityRole.setType(RoleType.USER);
+                                                      IdentityRole newIdentityRole = new IdentityRole();
+                                                      newIdentityRole.setType(RoleType.USER);
 
-                                      return newIdentityRole;
-                                  });
+                                                      return newIdentityRole;
+                                                  });
         identityUser.addRole(identityRole);
 
         return UserMapper.INSTANCE.toUserDto(userRepository.save(identityUser));

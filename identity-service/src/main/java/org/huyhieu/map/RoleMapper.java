@@ -16,7 +16,7 @@ public interface RoleMapper {
     @Mapping(target = "identityPermissions", ignore = true)
     IdentityRole toIdentityRole(RoleRequest request);
 
-    @Mapping(target = "permissionResponse", source = "identityPermissions")
+    @Mapping(target = "permission", source = "identityPermissions")
     RoleResponse toRoleResponse(IdentityRole role);
 
     List<RoleResponse> toRoleResponses(List<IdentityRole> roles);
